@@ -15,9 +15,11 @@
  */
 package com.spark3d.spatialPartitioning
 
+// Spark built-in partitioner
 import org.apache.spark.Partitioner
 
-import com.spark3d.utils.GridType._
+// spark3d deps
+import com.spark3d.geometry.Envelope
 import com.spark3d.geometryObjects.Shape3D._
 
 /**
@@ -29,7 +31,7 @@ import com.spark3d.geometryObjects.Shape3D._
   *   List of Shape3D objects which partition the space.
   *
   */
-abstract class SpatialPartitioner(grids : List[Shape3D]) extends Partitioner with Serializable {
+abstract class SpatialPartitioner(grids : List[Envelope]) extends Partitioner with Serializable {
 
   /**
     * Method to place a spatialObject (could a Point3D, a Sphere, and so on) on
@@ -40,12 +42,12 @@ abstract class SpatialPartitioner(grids : List[Shape3D]) extends Partitioner wit
     *
     * @param spatialObject : (T<:Shape3D)
     *   Object of type T = Shape3D, or any extension like Point3D, Sphere, ...
-    * @return (java.util.Iterator[Tuple2[Int, T]]) Java Iterator over
+    * @return (Iterator[Tuple2[Int, T]]) Iterator over
     *   a tuple (Key, Object). Key represents the partition number to which the
     *   spatialObject T belongs to.
     *
     */
-  def placeObject[T<:Shape3D](spatialObject : T) : java.util.Iterator[Tuple2[Int, T]] = ???
+  def placeObject[T<:Shape3D](spatialObject : T) : Iterator[Tuple2[Int, T]] = ???
 
   /**
     * Method to return the index of a partition

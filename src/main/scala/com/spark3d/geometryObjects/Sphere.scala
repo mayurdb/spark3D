@@ -15,6 +15,7 @@
  */
 package com.spark3d.geometryObjects
 
+import com.spark3d.geometry.BoxEnvelope
 import com.spark3d.geometryObjects.Shape3D._
 
 /**
@@ -32,7 +33,7 @@ import com.spark3d.geometryObjects.Shape3D._
 class Sphere(val x: Double, val y: Double, val z: Double, override val radius: Double) extends Shape3D with Serializable {
 
   // Center of our Sphere
-  val center = new Point3D(this.x, this.y, this.z)
+  val center = new Point3D(this.x, this.y, this.z, true)
 
   /**
     * Methods to determine whether two shapes overlap.
@@ -67,5 +68,17 @@ class Sphere(val x: Double, val y: Double, val z: Double, override val radius: D
     */
   override def getVolume : Double = {
     4.0 / 3.0 * math.Pi * this.radius * this.radius * this.radius
+  }
+
+  /**
+    * Get the bounding box of the Sphere
+    *
+    * @return bounding box (Cuboid) of the Sphere
+    */
+  override def getEnvelope: BoxEnvelope = {
+    BoxEnvelope.apply(
+        center.x - radius, center.x + radius,
+        center.y - radius, center.y + radius,
+        center.z - radius, center.z + radius)
   }
 }
